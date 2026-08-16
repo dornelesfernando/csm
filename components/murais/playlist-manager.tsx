@@ -1,21 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import {
-  Search,
-  Plus,
-  GripVertical,
-  ChevronUp,
-  ChevronDown,
-  Trash2,
-  Save,
-  Clock,
-  CheckCircle2,
-  AlertTriangle,
-  Film,
-  Image as ImageIcon,
-  Link as LinkIcon,
-} from "lucide-react"
+import { Search, Plus, GripVertical, ChevronUp, ChevronDown, Trash2, Save, Clock, CircleCheck as CheckCircle2, TriangleAlert as AlertTriangle, Film, Image as ImageIcon, Link as LinkIcon } from "lucide-react"
 import { toast } from "sonner"
 
 import { cn } from "@/lib/utils"

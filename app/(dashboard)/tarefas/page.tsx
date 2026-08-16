@@ -4,17 +4,7 @@ import React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import {
-  Search,
-  Filter,
-  Play,
-  Pause,
-  MoreHorizontal,
-  Eye,
-  ChevronUp,
-  ChevronDown,
-  Minus,
-} from "lucide-react"
+import { Search, ListFilter as Filter, Play, Pause, MoveHorizontal as MoreHorizontal, Eye, ChevronUp, ChevronDown, Minus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { NovaTarefaDialog } from "@/components/forms/nova-tarefa-dialog"
 import { Input } from "@/components/ui/input"

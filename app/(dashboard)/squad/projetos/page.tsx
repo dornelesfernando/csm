@@ -1,18 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import {
-  FolderOpen,
-  Search,
-  Calendar,
-  Users,
-  MoreHorizontal,
-  ArrowUpRight,
-  TrendingUp,
-  Clock,
-  CheckCircle2,
-  BarChart3,
-} from "lucide-react"
+import { FolderOpen, Search, Calendar, Users, MoveHorizontal as MoreHorizontal, ArrowUpRight, TrendingUp, Clock, CircleCheck as CheckCircle2, ChartBar as BarChart3 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { NovoProjetoSheet } from "@/components/forms/novo-projeto-sheet"
 import { Input } from "@/components/ui/input"

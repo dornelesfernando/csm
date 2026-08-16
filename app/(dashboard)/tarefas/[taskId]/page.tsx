@@ -2,19 +2,7 @@
 
 import { use } from "react"
 import Link from "next/link"
-import {
-  ArrowLeft,
-  Clock,
-  Edit,
-  Share2,
-  Archive,
-  MessageSquare,
-  Paperclip,
-  Send,
-  CheckCircle2,
-  Circle,
-  FileText,
-} from "lucide-react"
+import { ArrowLeft, Clock, CreditCard as Edit, Share2, Archive, MessageSquare, Paperclip, Send, CircleCheck as CheckCircle2, Circle, FileText } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

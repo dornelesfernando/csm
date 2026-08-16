@@ -4,7 +4,7 @@ import React from "react"
 
 import { useState } from "react"
 import Link from "next/link"
-import { MoreHorizontal, GripVertical, ChevronUp, Minus, ChevronDown, MessageSquare, Paperclip, Eye, Plus } from "lucide-react"
+import { MoveHorizontal as MoreHorizontal, GripVertical, ChevronUp, Minus, ChevronDown, MessageSquare, Paperclip, Eye, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { NovoCardDialog } from "@/components/forms/novo-card-dialog"
 import { Badge } from "@/components/ui/badge"

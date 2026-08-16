@@ -3,18 +3,7 @@
 import React from "react"
 
 import { useState } from "react"
-import {
-  AlertTriangle,
-  Search,
-  Clock,
-  CheckCircle2,
-  AlertCircle,
-  MoreHorizontal,
-  ExternalLink,
-  ShieldAlert,
-  Flame,
-  Zap,
-} from "lucide-react"
+import { TriangleAlert as AlertTriangle, Search, Clock, CircleCheck as CheckCircle2, CircleAlert as AlertCircle, MoveHorizontal as MoreHorizontal, ExternalLink, ShieldAlert, Flame, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ReportarIncidenteDialog } from "@/components/forms/reportar-incidente-dialog"
 import { Input } from "@/components/ui/input"

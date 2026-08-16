@@ -3,24 +3,7 @@
 import React from "react"
 
 import { useState } from "react"
-import {
-  Search,
-  Plus,
-  FolderOpen,
-  FileText,
-  ImageIcon,
-  FileSpreadsheet,
-  Upload,
-  MoreHorizontal,
-  Grid3X3,
-  List,
-  Download,
-  Trash2,
-  Eye,
-  X,
-  CloudUpload,
-  CheckCircle2,
-} from "lucide-react"
+import { Search, Plus, FolderOpen, FileText, Image as ImageIcon, FileSpreadsheet, Upload, MoveHorizontal as MoreHorizontal, Grid3x2 as Grid3X3, List, Download, Trash2, Eye, X, CloudUpload, CircleCheck as CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"

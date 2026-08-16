@@ -1,17 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import {
-  Lightbulb,
-  Search,
-  ThumbsUp,
-  MessageSquare,
-  MoreHorizontal,
-  Sparkles,
-  TrendingUp,
-  ArrowUpRight,
-  Bookmark,
-} from "lucide-react"
+import { Lightbulb, Search, ThumbsUp, MessageSquare, MoveHorizontal as MoreHorizontal, Sparkles, TrendingUp, ArrowUpRight, Bookmark } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { NovaIdeiaDialog } from "@/components/forms/nova-ideia-dialog"
 import { Input } from "@/components/ui/input"

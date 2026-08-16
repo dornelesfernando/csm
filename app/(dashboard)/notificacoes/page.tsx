@@ -3,20 +3,7 @@
 import React from "react"
 
 import { useState } from "react"
-import {
-  Bell,
-  Check,
-  CheckCheck,
-  MessageSquare,
-  AlertTriangle,
-  GitPullRequest,
-  Clock,
-  AtSign,
-  Star,
-  Trash2,
-  Settings,
-  Filter,
-} from "lucide-react"
+import { Bell, Check, CheckCheck, MessageSquare, TriangleAlert as AlertTriangle, GitPullRequest, Clock, AtSign, Star, Trash2, Settings, ListFilter as Filter } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
