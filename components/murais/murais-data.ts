@@ -262,6 +262,7 @@ export type Tela = {
   nome: string
   local: string
   centro: string // id de centro
+  predio: string
   ip: string
   status: ScreenStatus
   ultimaSync: string
@@ -275,6 +276,7 @@ export const TELAS: Tela[] = [
     nome: "Hall Principal",
     local: "Entrada do CCT - Terreo",
     centro: "cct",
+    predio: "Bloco A",
     ip: "10.0.14.21",
     status: "online",
     ultimaSync: "ha 2 min",
@@ -286,6 +288,7 @@ export const TELAS: Tela[] = [
     nome: "Corredor Laboratorios",
     local: "Bloco B - 2o andar",
     centro: "cct",
+    predio: "Bloco B",
     ip: "10.0.14.22",
     status: "online",
     ultimaSync: "ha 1 min",
@@ -297,6 +300,7 @@ export const TELAS: Tela[] = [
     nome: "Saguao Biblioteca",
     local: "Biblioteca Central - Entrada",
     centro: "biblioteca",
+    predio: "Edificio Principal",
     ip: "10.0.09.10",
     status: "online",
     ultimaSync: "ha 5 min",
@@ -308,6 +312,7 @@ export const TELAS: Tela[] = [
     nome: "Recepcao Saude",
     local: "CCS - Hall de entrada",
     centro: "ccs",
+    predio: "Prédio Principal",
     ip: "10.0.22.05",
     status: "offline",
     ultimaSync: "ha 3 h",
@@ -319,6 +324,7 @@ export const TELAS: Tela[] = [
     nome: "Atrio Humanas",
     local: "CCH - Convivencia",
     centro: "cch",
+    predio: "Bloco Norte",
     ip: "10.0.31.14",
     status: "sincronizando",
     ultimaSync: "agora",
@@ -330,6 +336,7 @@ export const TELAS: Tela[] = [
     nome: "Restaurante Universitario",
     local: "RU - Fila principal",
     centro: "reitoria",
+    predio: "Anexo Administrativo",
     ip: "10.0.02.40",
     status: "online",
     ultimaSync: "ha 4 min",
@@ -341,6 +348,7 @@ export const TELAS: Tela[] = [
     nome: "Galpao Agrarias",
     local: "CCA - Pavilhao de aulas",
     centro: "cca",
+    predio: "Prédio Central",
     ip: "10.0.45.03",
     status: "online",
     ultimaSync: "ha 8 min",
@@ -352,6 +360,7 @@ export const TELAS: Tela[] = [
     nome: "Auditorio Central",
     local: "Reitoria - Foyer",
     centro: "reitoria",
+    predio: "Auditório Central",
     ip: "10.0.02.41",
     status: "offline",
     ultimaSync: "ha 1 dia",

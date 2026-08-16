@@ -2,18 +2,7 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import {
-  Search,
-  Plus,
-  MoreHorizontal,
-  Pencil,
-  Eye,
-  Trash2,
-  Copy,
-  FileText,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react"
+import { Search, Plus, MoveHorizontal as MoreHorizontal, Pencil, Eye, Trash2, Copy, FileText, ChevronLeft, ChevronRight } from "lucide-react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
@@ -51,6 +40,8 @@ import {
   type ContentType,
 } from "./murais-data"
 import { TypeBadge, StatusBadge, TargetBadges } from "./content-badges"
+import { ContentViewSheet } from "./content-view-sheet"
+import type { Conteudo } from "./murais-data"
 
 const PAGE_SIZE = 6
 
@@ -67,6 +58,8 @@ export function ContentTable() {
   const [statusFilter, setStatusFilter] = useState<ContentStatus | "todos">("todos")
   const [typeFilter, setTypeFilter] = useState<ContentType | "todos">("todos")
   const [page, setPage] = useState(1)
+  const [viewConteudo, setViewConteudo] = useState<Conteudo | null>(null)
+  const [viewOpen, setViewOpen] = useState(false)
 
   const filtered = useMemo(() => {
     return CONTEUDOS.filter((c) => {
@@ -92,6 +85,7 @@ export function ContentTable() {
   }
 
   return (
+    <>
     <Card className="bg-card">
       {/* Toolbar */}
       <div className="flex flex-col gap-3 border-b border-border p-4 lg:flex-row lg:items-center">
@@ -228,7 +222,12 @@ export function ContentTable() {
                         <Pencil className="size-4" />
                         Editar
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          setViewConteudo(c)
+                          setViewOpen(true)
+                        }}
+                      >
                         <Eye className="size-4" />
                         Visualizar
                       </DropdownMenuItem>
@@ -295,5 +294,12 @@ export function ContentTable() {
         </div>
       </div>
     </Card>
+
+      <ContentViewSheet
+        conteudo={viewConteudo}
+        open={viewOpen}
+        onOpenChange={setViewOpen}
+      />
+    </>
   )
 }

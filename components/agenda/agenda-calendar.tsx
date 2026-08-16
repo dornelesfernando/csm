@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import type { ComponentProps } from "react"
 import { Calendar as CalendarIcon, MapPin, ChevronLeft, ChevronRight } from "lucide-react"
@@ -28,6 +30,7 @@ type DayProps = ComponentProps<typeof Calendar>["components"] extends infer T
 function DayWithDots(props: DayProps) {
   const dayOfMonth = props.day.date.getDate()
   const isCurrentMonth =
+    props.displayMonth &&
     props.day.date.getMonth() === props.displayMonth.getMonth()
 
   const types = isCurrentMonth

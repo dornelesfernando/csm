@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   MapPin,
   Wifi,
@@ -22,6 +23,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { centroById, type Tela, type ScreenStatus } from "./murais-data"
+import { ScreenSettingsDialog } from "./screen-settings-dialog"
 
 const statusMeta: Record<
   ScreenStatus,
@@ -52,6 +54,7 @@ export function ScreenCard({ tela }: { tela: Tela }) {
   const s = statusMeta[tela.status]
   const StatusIcon = s.icon
   const isOnline = tela.status !== "offline"
+  const [settingsOpen, setSettingsOpen] = useState(false)
 
   return (
     <Card className="flex flex-col overflow-hidden bg-card transition-shadow hover:shadow-md">
@@ -148,7 +151,7 @@ export function ScreenCard({ tela }: { tela: Tela }) {
               variant="outline"
               size="icon"
               className="size-9"
-              onClick={() => toast("Configuracoes da tela", { description: tela.nome })}
+              onClick={() => setSettingsOpen(true)}
             >
               <Settings className="size-4" />
               <span className="sr-only">Configuracoes</span>
@@ -157,6 +160,12 @@ export function ScreenCard({ tela }: { tela: Tela }) {
           <TooltipContent>Configuracoes</TooltipContent>
         </Tooltip>
       </CardFooter>
+
+      <ScreenSettingsDialog
+        tela={tela}
+        open={settingsOpen}
+        onOpenChange={setSettingsOpen}
+      />
     </Card>
   )
 }

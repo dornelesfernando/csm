@@ -3,31 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  LayoutDashboard,
-  GitBranch,
-  CalendarDays,
-  BookMarked,
-  Sparkles,
-  Bot,
-  Wrench,
-  Settings,
-  ChevronDown,
-  ChevronsUpDown,
-  Plus,
-  Sun,
-  Moon,
-  Monitor,
-  GraduationCap,
-  FileText,
-  Award,
-  Focus,
-  Pin,
-  MonitorPlay,
-  Newspaper,
-  Tv,
-  PlaySquare,
-} from "lucide-react"
+import { LayoutDashboard, GitBranch, CalendarDays, BookMarked, Sparkles, Bot, Wrench, Settings, ChevronDown, ChevronsUpDown, Sun, Moon, Monitor, FileText, Award, Focus, Pin, MonitorPlay, Newspaper, Tv, SquarePlay as PlaySquare, Users, Building2, MonitorSmartphone } from "lucide-react"
 import { useTheme } from "next-themes"
 
 import {
@@ -78,6 +54,11 @@ const muraisNav = [
   { title: "Telas", href: "/murais/telas", icon: Tv },
 ]
 
+const adminNav = [
+  { title: "Usuários", href: "/usuarios", icon: Users },
+  { title: "Centros e Prédios", href: "/centros-predios", icon: Building2 },
+]
+
 // Ferramentas favoritadas pelo usuario no Academic Toolkit
 const pinnedTools = [
   { title: "Resume Builder", href: "/toolkit/resume-builder", icon: FileText },
@@ -89,16 +70,18 @@ const pinnedTools = [
   },
 ]
 
-const cursos = [
-  { name: "Ciencia da Computacao", color: "bg-blue-500" },
-  { name: "Engenharia de Software", color: "bg-emerald-500" },
-  { name: "Sistemas de Informacao", color: "bg-amber-500" },
+const centrosContext = [
+  { id: "ct", nome: "Centro de Tecnologia", sigla: "CT", cor: "bg-blue-500" },
+  { id: "ccne", nome: "Centro de Ciências Naturais e Exatas", sigla: "CCNE", cor: "bg-emerald-500" },
+  { id: "ccs", nome: "Centro de Ciências da Saúde", sigla: "CCS", cor: "bg-rose-500" },
+  { id: "cch", nome: "Centro de Ciências Humanas", sigla: "CCH", cor: "bg-violet-500" },
 ]
 
 export function AppSidebar() {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const [centroSelecionado, setCentroSelecionado] = useState(centrosContext[0])
 
   useEffect(() => {
     setMounted(true)
@@ -116,14 +99,14 @@ export function AppSidebar() {
                   className="data-[state=open]:bg-sidebar-accent"
                 >
                   <div className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                    <GraduationCap className="size-4" />
+                    <MonitorSmartphone className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">
-                      Academic Companion
+                      Murais Digitais
                     </span>
                     <span className="truncate text-xs text-muted-foreground">
-                      Ciencia da Computacao
+                      {centroSelecionado.nome}
                     </span>
                   </div>
                   <ChevronsUpDown className="ml-auto size-4" />
@@ -135,19 +118,25 @@ export function AppSidebar() {
                 side="bottom"
                 sideOffset={4}
               >
-                <DropdownMenuLabel>Cursos</DropdownMenuLabel>
-                {cursos.map((curso) => (
-                  <DropdownMenuItem key={curso.name}>
-                    <div
-                      className={`mr-2 size-4 rounded ${curso.color}`}
-                    />
-                    {curso.name}
+                <DropdownMenuLabel>Meus Centros</DropdownMenuLabel>
+                {centrosContext.map((centro) => (
+                  <DropdownMenuItem
+                    key={centro.id}
+                    onClick={() => setCentroSelecionado(centro)}
+                  >
+                    <Building2 className="mr-2 size-4 text-muted-foreground" />
+                    <span className="flex-1 truncate">{centro.nome}</span>
+                    {centroSelecionado.id === centro.id && (
+                      <span className={`size-2 rounded-full ${centro.cor}`} />
+                    )}
                   </DropdownMenuItem>
                 ))}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Plus className="mr-2 size-4" />
-                  Adicionar curso
+                <DropdownMenuItem asChild>
+                  <Link href="/centros-predios">
+                    <Settings className="mr-2 size-4" />
+                    Gerenciar Centros
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -156,44 +145,6 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        {/* <SidebarGroup>
-          <SidebarGroupLabel>Minha Jornada</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {personalNav.map((item) => (
-                <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.href}
-                  >
-                    <Link href={item.href}>
-                      <item.icon className="size-4" />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                  {item.children && (
-                    <SidebarMenuSub>
-                      {item.children.map((child) => (
-                        <SidebarMenuSubItem key={child.href}>
-                          <SidebarMenuSubButton
-                            asChild
-                            isActive={pathname === child.href}
-                          >
-                            <Link href={child.href}>
-                              <child.icon className="size-4" />
-                              <span>{child.title}</span>
-                            </Link>
-                          </SidebarMenuSubButton>
-                        </SidebarMenuSubItem>
-                      ))}
-                    </SidebarMenuSub>
-                  )}
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
-
         {/* CMS de Murais Digitais do campus */}
         <SidebarGroup className="border-t border-sidebar-border">
           <SidebarGroupLabel>Murais Digitais</SidebarGroupLabel>
@@ -230,6 +181,28 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Admin</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {adminNav.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                  >
+                    <Link href={item.href}>
+                      <item.icon className="size-4" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
 
         {/* Acesso rapido as ferramentas favoritadas no Toolkit */}
         {/* <SidebarGroup className="border-t border-sidebar-border">
