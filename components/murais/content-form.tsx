@@ -5,17 +5,7 @@ import { useRouter } from "next/navigation"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import type { DateRange } from "react-day-picker"
-import {
-  UploadCloud,
-  CalendarIcon,
-  Check,
-  ChevronsUpDown,
-  X,
-  FileImage,
-  ImagePlus,
-  Save,
-  Send,
-} from "lucide-react"
+import { CloudUpload as UploadCloud, Calendar as CalendarIcon, Save, Send, Link as LinkIcon } from "lucide-react"
 import { toast } from "sonner"
 
 import { cn } from "@/lib/utils"
@@ -38,35 +28,44 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { LocaisSelector } from "./locais-selector"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
-  CENTROS,
-  CONTENT_TYPES,
-  CONTENT_TYPE_KEYS,
-  centroById,
-} from "./murais-data"
+  POST_TYPES,
+  POST_TYPE_KEYS,
+  type PostType,
+} from "./playlist-data"
 
 export function ContentForm() {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
+  const [titulo, setTitulo] = useState("")
+  const [resumo, setResumo] = useState("")
+  const [link, setLink] = useState("")
+  const [linkError, setLinkError] = useState("")
   const [range, setRange] = useState<DateRange | undefined>()
+  const [tipo, setTipo] = useState<PostType>("noticia")
   const [locais, setLocais] = useState<string[]>([])
-  const [locaisOpen, setLocaisOpen] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [fileName, setFileName] = useState<string | null>(null)
 
-  function toggleLocal(id: string) {
-    setLocais((prev) =>
-      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
-    )
+  function validateLink(value: string): boolean {
+    if (!value) return true
+    try {
+      const url = new URL(value)
+      return url.protocol === "http:" || url.protocol === "https:"
+    } catch {
+      return false
+    }
+  }
+
+  function handleLinkChange(value: string) {
+    setLink(value)
+    if (value && !validateLink(value)) {
+      setLinkError("Informe uma URL valida (https://...)")
+    } else {
+      setLinkError("")
+    }
   }
 
   function handleFiles(files: FileList | null) {
@@ -77,6 +76,14 @@ export function ContentForm() {
   }
 
   function handleSubmit(publicar: boolean) {
+    if (!titulo.trim()) {
+      toast.error("Informe o titulo da postagem.")
+      return
+    }
+    if (!validateLink(link)) {
+      toast.error("O link informado nao e uma URL valida.")
+      return
+    }
     if (publicar) {
       toast.success("Conteudo publicado", {
         description: "A postagem ja esta na fila de exibicao das telas.",
@@ -98,7 +105,6 @@ export function ContentForm() {
       className="flex flex-col gap-6"
     >
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* Coluna principal */}
         <div className="flex flex-col gap-6 lg:col-span-2">
           <Card className="bg-card">
             <CardHeader>
@@ -111,6 +117,8 @@ export function ContentForm() {
                   id="titulo"
                   placeholder="Ex: Semana Academica de Computacao 2026"
                   className="text-base"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
                 />
               </div>
 
@@ -120,10 +128,36 @@ export function ContentForm() {
                   id="resumo"
                   placeholder="Escreva o texto que sera exibido no mural. Seja direto e objetivo para leitura a distancia."
                   className="min-h-36 resize-none"
+                  value={resumo}
+                  onChange={(e) => setResumo(e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">
                   Recomendado ate 240 caracteres para boa leitura na TV.
                 </p>
+              </div>
+
+              <div className="grid gap-2">
+                <Label
+                  htmlFor="link"
+                  className="flex items-center gap-1.5"
+                >
+                  <LinkIcon className="size-3.5 text-muted-foreground" />
+                  Link (opcional)
+                </Label>
+                <Input
+                  id="link"
+                  type="url"
+                  placeholder="https://exemplo.com.br/conteudo"
+                  value={link}
+                  onChange={(e) => handleLinkChange(e.target.value)}
+                />
+                {linkError ? (
+                  <p className="text-xs text-destructive">{linkError}</p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    URL externa acessivel via QR Code no mural.
+                  </p>
+                )}
               </div>
 
               <div className="grid gap-2">
@@ -154,16 +188,7 @@ export function ContentForm() {
                   )}
                 >
                   {fileName ? (
-                    <>
-                      <div className="flex size-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                        <FileImage className="size-5" />
-                      </div>
-                      <p className="text-sm font-medium">{fileName}</p>
-                      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                        <ImagePlus className="size-3" />
-                        Clique para trocar o arquivo
-                      </span>
-                    </>
+                    <p className="text-sm font-medium">{fileName}</p>
                   ) : (
                     <>
                       <div className="flex size-11 items-center justify-center rounded-full bg-muted text-muted-foreground">
@@ -173,7 +198,7 @@ export function ContentForm() {
                         Arraste uma imagem ou video aqui
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        ou clique para procurar &middot; PNG, JPG, MP4 ate 20MB
+                        ou clique para procurar
                       </p>
                     </>
                   )}
@@ -190,14 +215,14 @@ export function ContentForm() {
           </Card>
         </div>
 
-        {/* Coluna lateral: configuracoes */}
         <div className="flex flex-col gap-6">
           <Card className="bg-card lg:sticky lg:top-6">
             <CardHeader>
-              <CardTitle className="text-base">Configuracoes de exibicao</CardTitle>
+              <CardTitle className="text-base">
+                Configuracoes de exibicao
+              </CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-5">
-              {/* Date range */}
               <div className="grid gap-2">
                 <Label>Periodo de exibicao</Label>
                 <Popover>
@@ -237,109 +262,37 @@ export function ContentForm() {
                 </Popover>
               </div>
 
-              {/* Tipo */}
               <div className="grid gap-2">
                 <Label htmlFor="tipo">Tipo de conteudo</Label>
-                <Select defaultValue="noticia">
+                <Select
+                  value={tipo}
+                  onValueChange={(v) => setTipo(v as PostType)}
+                >
                   <SelectTrigger id="tipo">
                     <SelectValue placeholder="Selecione o tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    {CONTENT_TYPE_KEYS.map((k) => (
+                    {POST_TYPE_KEYS.map((k) => (
                       <SelectItem key={k} value={k}>
-                        {CONTENT_TYPES[k].label}
+                        {POST_TYPES[k].label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Multi-select locais */}
               <div className="grid gap-2">
                 <Label>Locais de exibicao</Label>
-                <Popover open={locaisOpen} onOpenChange={setLocaisOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={locaisOpen}
-                      className="justify-between font-normal"
-                    >
-                      <span className="truncate text-left">
-                        {locais.length === 0
-                          ? "Selecione os predios"
-                          : `${locais.length} local(is) selecionado(s)`}
-                      </span>
-                      <ChevronsUpDown className="size-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
-                    <Command>
-                      <CommandInput placeholder="Buscar predio..." />
-                      <CommandList>
-                        <CommandEmpty>Nenhum local encontrado.</CommandEmpty>
-                        <CommandGroup>
-                          {CENTROS.map((c) => {
-                            const selected = locais.includes(c.id)
-                            return (
-                              <CommandItem
-                                key={c.id}
-                                value={c.nome}
-                                onSelect={() => toggleLocal(c.id)}
-                              >
-                                <div
-                                  className={cn(
-                                    "flex size-4 items-center justify-center rounded border",
-                                    selected
-                                      ? "border-primary bg-primary text-primary-foreground"
-                                      : "border-muted-foreground/40",
-                                  )}
-                                >
-                                  {selected && <Check className="size-3" />}
-                                </div>
-                                <span className={cn("size-2 rounded-full", c.cor)} />
-                                <span className="flex-1">{c.nome}</span>
-                              </CommandItem>
-                            )
-                          })}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-
-                {locais.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 pt-1">
-                    {locais.map((id) => {
-                      const c = centroById(id)
-                      if (!c) return null
-                      return (
-                        <span
-                          key={id}
-                          className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/50 py-0.5 pl-1.5 pr-1 text-xs font-medium"
-                        >
-                          <span className={cn("size-2 rounded-full", c.cor)} />
-                          {c.sigla}
-                          <button
-                            type="button"
-                            onClick={() => toggleLocal(id)}
-                            className="rounded p-0.5 hover:bg-muted"
-                            aria-label={`Remover ${c.sigla}`}
-                          >
-                            <X className="size-3" />
-                          </button>
-                        </span>
-                      )
-                    })}
-                  </div>
-                )}
+                <LocaisSelector
+                  selected={locais}
+                  onChange={setLocais}
+                />
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Rodape de acoes */}
       <Separator />
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <Button
